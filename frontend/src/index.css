@@ -1,0 +1,185 @@
+:root {
+  /* Allgemeine Schriftarten und Basis-Design-Einstellungen */
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* Unterstützt helle und dunkle Farbschemata */
+  color-scheme: light dark;
+
+  /* Standardfarbe für Text und Hintergrund */
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  /* Optimierungen für Schriftanzeige */
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit; /* entfernt Unterstreichung */
+}
+a:hover {
+  color: #535bf2; /* Farbe beim Überfahren mit der Maus */
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center; /* zentriert Inhalt vertikal */
+  min-width: 320px;
+  min-height: 100vh; /* volle Bildschirmhöhe */
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+/* Button-Grunddesign */
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+/* Hover-Effekt für Buttons */
+button:hover {
+  border-color: #646cff;
+}
+
+/* Fokus-Stil für bessere Barrierefreiheit */
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+/* Anpassung für helle Farbschemata */
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+/* Styling für Charakterkarten */
+.character-card {
+  display: flex;
+  background-color: #1c1c1c;
+  color: #fff;
+  border-radius: 12px;
+  padding: 1rem;
+  margin: 1rem auto;
+  max-width: 800px;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.character-card:hover {
+  transform: scale(1.02); /* Vergrößert die Karte leicht beim Hover */
+}
+
+/* Bild innerhalb der Charakterkarte */
+.character-image img {
+  width: 150px;
+  border-radius: 10px;
+}
+
+/* Informationsbereich der Karte */
+.character-info {
+  flex: 1;
+  padding-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Überschrift und Untertext */
+.character-header h2 {
+  margin: 0;
+  color: #fcd300;
+}
+.character-header p {
+  margin: 0.2rem 0 1rem;
+  color: #ccc;
+}
+
+/* Statistik-Bereich */
+.character-stats .stat {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+.character-stats p {
+  margin: 0;
+  color: #aaa;
+}
+.character-stats span {
+  font-weight: bold;
+  color: #ffcc00;
+}
+/* Container für Aktionsbuttons */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+/* Stil für Bearbeiten-Button */
+.edit-btn {
+  background-color: #2196f3; /* Blau */
+  color: #fff;
+}
+.edit-btn:hover {
+  background-color: #1976d2;
+}
+
+/* Stil für Löschen-Button */
+.delete-btn {
+  background-color: #f44336; /* Rot */
+  color: #fff;
+}
+.delete-btn:hover {
+  background-color: #d32f2f;
+}
+
+/* Responsive Optimierung für Character Card */
+@media (max-width: 768px) {
+  .character-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .character-image img {
+    width: 100%;
+    max-width: 250px;
+  }
+
+  .character-info {
+    padding-left: 0;
+    padding-top: 1rem;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+}

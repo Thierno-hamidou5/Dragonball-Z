@@ -1,0 +1,184 @@
+/* Layout-Grundstruktur */
+#root {
+  max-width: 1280px; /* Begrenze die Breite des Inhalts */
+  margin: 0 auto; /* Zentriere den Inhalt horizontal */
+  padding: 2rem; /* Abstand innen */
+  text-align: center; /* Text zentrieren */
+}
+
+.App-nav {
+  display: flex; /* Navigation horizontal anordnen */
+  justify-content: center;
+  flex-wrap: wrap; /* Umbruch bei kleiner Breite */
+  gap: 1rem; /* Abstand zwischen Links */
+  margin-bottom: 2rem; /* Abstand nach unten */
+}
+
+.App-nav a {
+  padding: 0.5rem 1rem; /* Innenabstand */
+  background-color: #333; /* Dunkler Hintergrund */
+  color: #ffcc00; /* Gelber Text */
+  font-weight: bold;
+  text-decoration: none; /* Kein Unterstrich */
+  border-radius: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.App-nav a:hover {
+  background-color: #555; /* Hellere Farbe beim Hover */
+  color: white;
+}
+
+/* Logo */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem auto;
+}
+
+.logo {
+  max-width: 300px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2); /* Leichte Schatten */
+  transition: transform 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.05); /* Leichtes Vergrößern beim Hover */
+}
+
+/* Animation */
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg); /* Endlos-Rotation */
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+/* Charakter-Karten */
+.character-card {
+  display: flex;
+  background-color: #1c1c1c;
+  color: #fff;
+  border-radius: 12px;
+  padding: 1rem;
+  margin: 1rem auto;
+  max-width: 800px;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
+  transition: transform 0.3s ease;
+}
+
+.character-card:hover {
+  transform: scale(1.02); /* Leichtes Vergrößern beim Hover */
+}
+
+.character-image img {
+  width: 150px;
+  border-radius: 10px; /* Abgerundete Ecken */
+}
+
+.character-info {
+  flex: 1;
+  padding-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.character-header h2 {
+  margin: 0;
+  color: #fcd300;
+}
+
+.character-header p {
+  margin: 0.2rem 0 1rem;
+  color: #ccc;
+}
+
+.character-stats .stat {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.character-stats p {
+  margin: 0;
+  color: #aaa;
+}
+
+.character-stats span {
+  font-weight: bold;
+  color: #ffcc00;
+}
+
+/* Buttons (Standard) */
+button {
+  border-radius: 8px;
+  border: none;
+  padding: 0.6em 1.4em;
+  font-size: 1em;
+  font-weight: bold;
+  background-color: #ff5722; /* Orange */
+  color: white;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  margin-top: 0.5rem;
+}
+
+button:hover {
+  background-color: #e64a19; /* Dunkleres Orange beim Hover */
+  transform: scale(1.03);
+}
+
+button:disabled {
+  background-color: gray;
+  cursor: not-allowed;
+}
+
+/* Grunddesign für die Seite */
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(
+    135deg,
+    #2a0845,
+    #6441a5
+  ); /* mystischer Hintergrund */
+  color: #f0f0f0;
+}
+
+/* Aktionen-Buttons gemeinsam ausrichten */
+.action-buttons {
+  display: flex;
+  justify-content: center; /* Zentriert unter dem Charakter */
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Bearbeiten-Button im blauen Stil */
+.edit-btn {
+  border-radius: 8px;
+  border: none;
+  padding: 0.6em 1.4em;
+  font-size: 1em;
+  font-weight: bold;
+  background-color: #2196f3; /* Blau für Bearbeiten */
+  color: white;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.edit-btn:hover {
+  background-color: #1976d2; /* Dunkleres Blau beim Hover */
+  transform: scale(1.03);
+}
