@@ -1,72 +1,184 @@
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import {
+  addFavourite,
+  removeFavourite,
+  getMyFavourites,
+} from "../services/favouriteService";
 
-// Props: Charaktereigenschaften + Info, ob es ein eigener (custom) Charakter ist
+// Zahl wie 6000000 -> "6,000,000"
+// Wenn kein echter Zahlenwert (z.B. "90 Septillion"), Rueckgabe unveraendert
+const formatKi = (value) => {
+  if (value === null || value === undefined || value === "") return "";
+
+  const numeric = Number(String(value).replaceAll(",", "").trim());
+  if (Number.isNaN(numeric)) return value;
+
+  // EN-Format: 6,000,000
+  return numeric.toLocaleString("en-US");
+  // Falls du Schweizer / deutsches Format willst:
+  // return numeric.toLocaleString("de-CH"); // 6â€™000â€™000
+  // return numeric.toLocaleString("de-DE"); // 6.000.000
+};
+
+/**
+ * Frontend-Komponente: zeigt eine Charakterkarte inkl. Bild,
+ * Basiswerten und Favoriten-Schalter, angelehnt an die Klassendoku
+ * im Backend.
+ *
+ * Props:
+ * - id: optionale Backend-ID (fuer Fav-API)
+ * - name/race/gender/affiliation: Stammdaten fuer Anzeige
+ * - baseKi/totalKi: numerisch oder String, werden formatiert
+ * - image: Bild-URL, faellt auf Platzhalter zurueck
+ * - isCustom: markiert lokale Charaktere ohne Backend-ID
+ */
 const CharacterCard = ({
-  name,
-  image,
-  race,
-  gender,
-  baseKi,
-  totalKi,
-  affiliation,
-  isCustom, // wird genutzt, um später "Bearbeiten" anzuzeigen
-}) => {
+                         id,
+                         name,
+                         image,
+                         race,
+                         gender,
+                         baseKi,
+                         totalKi,
+                         affiliation,
+                         isCustom = false,
+                       }) => {
+  const displayImage = image || "/img/Jiren.webp";
+  const targetId = id ?? encodeURIComponent(name);
+  const affiliationLabel = Array.isArray(affiliation)
+      ? affiliation.join(", ")
+      : affiliation;
+
+  const { isAuthenticated } = useAuth();
+  const [isFavourite, setIsFavourite] = useState(false);
+  const [favError, setFavError] = useState(null);
+  const numericId = Number.isFinite(Number(id)) ? Number(id) : null;
+  const showFav = isAuthenticated && numericId !== null;
+
+  // Favoritenstatus laden, sobald Nutzer angemeldet ist.
+  useEffect(() => {
+    let active = true;
+    const load = async () => {
+      if (!showFav) return;
+      try {
+        const response = await getMyFavourites();
+        const ids = (response.data || []).map((c) => c.id);
+        if (active) setIsFavourite(ids.includes(numericId));
+      } catch (err) {
+        console.error("Failed to load favourites", err);
+      }
+    };
+    load();
+    return () => {
+      active = false;
+    };
+  }, [showFav, id]);
+
+  const handleToggleFavourite = async (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (!showFav) return;
+    setFavError(null);
+    try {
+      if (isFavourite) {
+        await removeFavourite(numericId);
+        setIsFavourite(false);
+      } else {
+        await addFavourite(numericId);
+        setIsFavourite(true);
+      }
+    } catch (err) {
+      console.error("Favourite toggle failed", err);
+      const status = err?.response?.status;
+      if (status === 401) {
+        setFavError("Bitte erst einloggen.");
+      } else if (status === 403) {
+        setFavError("Keine Berechtigung.");
+      } else if (status === 404) {
+        setFavError("Charakter nicht gefunden.");
+      } else {
+        setFavError(err.message || "Could not update favourite");
+      }
+    }
+  };
+
   return (
-    // Die gesamte Karte ist ein Link zur Detailansicht des Charakters
-    <Link
-      to={`/character/${encodeURIComponent(name)}`} // URL-freundlicher Name
-      className="character-link"
-      state={{
-        character: {
-          name,
-          image,
-          race,
-          gender,
-          ki: baseKi, // baseKi wird als "ki" übergeben
-          maxKi: totalKi, // totalKi als "maxKi"
-          affiliation,
-        },
-        isCustom: isCustom, // Info: stammt der Charakter von Benutzer?
-      }}
-    >
-      <article className="character-card">
-        {/* Bildbereich */}
-        <div className="character-image">
-          <img src={image} alt={name} />
-        </div>
+      <Link
+          to={`/characters/${targetId}`}
+          className="character-link"
+          state={{
+            character: {
+              id,
+              name,
+              image: displayImage,
+              race,
+              gender,
+              // hier geben wir weiterhin den â€žrohenâ€œ Wert weiter
+              ki: baseKi,
+              maxKi: totalKi,
+              affiliation,
+            },
+            isCustom,
+          }}
+      >
+        <article className="character-card" style={{ position: "relative" }}>
+          {showFav && (
+              <button
+                  type="button"
+                  onClick={handleToggleFavourite}
+                  style={{
+                    position: "absolute",
+                    top: "0.5rem",
+                    right: "0.5rem",
+                    background: isFavourite ? "#f87171" : "#f3f4f6",
+                    color: "#111",
+                    border: "1px solid #e5e7eb",
+                    borderRadius: "999px",
+                    padding: "0.25rem 0.6rem",
+                    cursor: "pointer",
+                    fontWeight: 700,
+                  }}
+                  aria-label="Toggle favourite"
+              >
+                {isFavourite ? "Fav ♥" : "Fav +"}
+              </button>
+          )}
 
-        {/* Textbereich */}
-        <div className="character-info">
-          <div className="character-header">
-            <h2>{name}</h2>
-            <p>
-              {race} - {gender}
-            </p>
+          <div className="character-image">
+            <img src={displayImage} alt={name} />
           </div>
 
-          {/* Statistiken */}
-          <div className="character-stats">
-            <div className="stat">
-              <p>Base KI:</p>
-              <span>{baseKi}</span>
+          <div className="character-info">
+            <div className="character-header">
+              <h2>{name}</h2>
+              <p>
+                {race} - {gender}
+              </p>
             </div>
-            <div className="stat">
-              <p>Total KI:</p>
-              <span>{totalKi}</span>
-            </div>
-            <div className="stat">
-              <p>Affiliation:</p>
-              <span>
-                {/* Falls affiliation ein Array ist, mit Komma trennen */}
-                {Array.isArray(affiliation)
-                  ? affiliation.join(", ")
-                  : affiliation}
-              </span>
+
+            <div className="character-stats">
+              <div className="stat">
+                <p>Base KI:</p>
+                <span>{formatKi(baseKi)}</span>
+              </div>
+              <div className="stat">
+                <p>Total KI:</p>
+                <span>{formatKi(totalKi)}</span>
+              </div>
+              <div className="stat">
+                <p>Affiliation:</p>
+                <span>{affiliationLabel}</span>
+              </div>
             </div>
           </div>
-        </div>
-      </article>
-    </Link>
+
+          {favError && (
+              <p style={{ color: "red", marginTop: "0.5rem" }}>{favError}</p>
+          )}
+        </article>
+      </Link>
   );
 };
 
