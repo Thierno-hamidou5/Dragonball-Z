@@ -1,58 +1,65 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import CharacterCard from "../components/CharacterCard.jsx"; // Importiert die Komponente zur Darstellung eines Charakters
+import React, { useState, useEffect } from "react";
+import CharacterCard from "../components/CharacterCard.jsx";
+import { fetchCharactersByAffiliation } from "../services/characterService";
 
+/**
+ * Frontend-Seite: zeigt alle Z Fighters aus dem Backend,
+ * filtert nach Affiliation 'Z Fighter' und ist wie die Backend-Klassen
+ * dokumentiert.
+ */
 const Z_Fighters = () => {
-  // State zum Speichern der von der API geladenen Z Fighters
-  const [apiCharacters, setApiCharacters] = useState([]);
-
-  // URL zur API, die nur Charaktere mit der Zugehörigkeit "Z Fighter" zurückgibt
-  const url =
-    "https://dragonball-api.com/api/characters?affiliation=Z%20Fighter";
+  const [characters, setCharacters] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    let active = true;
     const fetchData = async () => {
       try {
-        // Hole die Daten von der API
-        const response = await axios.get(url);
-
-        if (response.data) {
-          // Speichere die Daten im State
-          setApiCharacters(response.data);
-        }
-      } catch (error) {
-        // Fehlerbehandlung bei fehlgeschlagener Anfrage
-        console.error("Fehler beim Laden der Charaktere:", error);
+        const data = await fetchCharactersByAffiliation("Z Fighter");
+        if (!active) return;
+        setCharacters(data || []);
+      } catch (err) {
+        if (!active) return;
+        console.error("Fehler beim Laden der Charaktere:", err);
+        setError("Konnte Z Fighters nicht laden");
+      } finally {
+        if (active) setLoading(false);
       }
     };
-
-    // Führe den API-Call aus
     fetchData();
-  }, [url]); // Effekt wird erneut ausgeführt, wenn sich die URL ändert
+    return () => {
+      active = false;
+    };
+  }, []);
 
-  // Debug-Ausgabe in der Konsole
-  console.log(apiCharacters);
+  if (loading) {
+    return <p>Loading Z Fighters...</p>;
+  }
 
   return (
-    <div>
-      <h2>Z Fighters</h2>
-
-      {/* Wenn Charaktere vorhanden sind, zeige eine CharacterCard für jeden */}
-      {apiCharacters.length > 0 &&
-        apiCharacters.map((character, i) => (
-          <CharacterCard
-            key={character.id || character.name + i} // Eindeutiger Key pro Element
-            name={character.name}
-            image={character.image}
-            race={character.race}
-            gender={character.gender}
-            baseKi={character.ki}
-            totalKi={character.maxKi}
-            affiliation={character.affiliation}
-          />
-        ))}
-    </div>
+      <div>
+        <h2>Z Fighters</h2>
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        {characters.length === 0 ? (
+            <p>No Z Fighters available.</p>
+        ) : (
+            characters.map((character, i) => (
+                <CharacterCard
+                    key={character.id || character.name + i}
+                    id={character.id}
+                    name={character.name}
+                    image={character.image || character.imageUrl || "/img/Jiren.webp"}
+                    race={character.race}
+                    gender={character.gender}
+                    baseKi={character.ki}
+                    totalKi={character.maxKi}
+                    affiliation={character.affiliation}
+                />
+            ))
+        )}
+      </div>
   );
 };
 
-export default Z_Fighters; // Exportiert die Komponente zur Verwendung in anderen Teilen der App
+export default Z_Fighters;

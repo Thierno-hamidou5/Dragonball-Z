@@ -2,22 +2,25 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import CharacterCard from "../components/CharacterCard.jsx";
 
-// Komponente zur Erstellung und Bearbeitung von eigenen Charakteren
+const placeholderImage = "/img/Jiren.webp";
+
+/**
+ * Frontend-Seite: ermoeglicht das lokale Anlegen, Bearbeiten oder
+ * Loeschen eigener Charaktere (ohne Backend), dokumentiert im Stil
+ * der Klassenkommentare aus dem Backend.
+ */
 const NeuCharacters = ({ customCharacters, setCustomCharacters }) => {
-  const { state } = useLocation(); // State aus der Navigation (z.B. von "Bearbeiten"-Button)
+  const { state } = useLocation();
   const navigate = useNavigate();
 
-  // Prüfe, ob es sich um einen Bearbeitungsfall handelt
   const isEditing = state?.edit || false;
   const characterToEdit = state?.character || null;
-  const originalName = characterToEdit?.name; // Wird benötigt, falls Name beim Bearbeiten geändert wird
+  const originalName = characterToEdit?.name;
 
-  // Lokaler Zustand für Formularfelder
   const [name, setName] = useState("");
   const [race, setRace] = useState("");
   const [ki, setKi] = useState("");
 
-  // Wenn in den Bearbeitungsmodus gewechselt wird, Formular mit bestehenden Daten befüllen
   useEffect(() => {
     if (isEditing && characterToEdit) {
       setName(characterToEdit.name);
@@ -26,112 +29,93 @@ const NeuCharacters = ({ customCharacters, setCustomCharacters }) => {
     }
   }, [isEditing, characterToEdit]);
 
-  // Input-Handler für Formularfelder
-  const handleNameInputChange = (e) => setName(e.target.value);
-  const handleRaceInputChange = (e) => setRace(e.target.value);
-  const handleKiInputChange = (e) => setKi(e.target.value);
-
-  // Beim Absenden des Formulars
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Erstelle Objekt für neuen oder bearbeiteten Charakter
     const newCharacter = {
       name,
       race,
       ki,
       maxKi: ki,
-      image: "/img/Jiren.webp",
+      image: placeholderImage,
       gender: "",
       affiliation: "",
+      id: name,
     };
 
     if (isEditing && characterToEdit) {
-      // Wenn bearbeitet wird: ersetze alten Charakter basierend auf Originalname
       const updatedList = customCharacters.map((c) =>
-        c.name === originalName ? newCharacter : c
+          c.name === originalName ? newCharacter : c
       );
       setCustomCharacters(updatedList);
     } else {
-      // Falls Name schon existiert, abbrechen
       const exists = customCharacters.some((c) => c.name === name);
       if (exists) {
         alert("Ein Charakter mit diesem Namen existiert bereits.");
         return;
       }
-
-      // Neuen Charakter hinzufügen
       setCustomCharacters((prev) => [...prev, newCharacter]);
     }
 
-    // Formular leeren
     setName("");
     setRace("");
     setKi("");
-
-    // Zurück zur Startseite
     navigate("/");
   };
 
-  // Charakter aus der Liste löschen
   const handleDelete = (index) => {
     const updatedList = customCharacters.filter((_, i) => i !== index);
     setCustomCharacters(updatedList);
   };
 
-  // JSX: Formular + Anzeige aller eigenen Charaktere
   return (
-    <div>
-      {/* Formular zur Eingabe */}
-      <form onSubmit={handleSubmit} style={{ marginBottom: "2rem" }}>
-        <h3>
-          {isEditing ? "Charakter bearbeiten" : "Neuen Charakter hinzufügen"}
-        </h3>
-        <input
-          type="text"
-          name="name"
-          placeholder="Name"
-          value={name}
-          onChange={handleNameInputChange}
-          required
-        />
-        <input
-          type="text"
-          name="race"
-          placeholder="Rasse"
-          value={race}
-          onChange={handleRaceInputChange}
-        />
-        <input
-          type="number"
-          name="ki"
-          placeholder="Base KI"
-          value={ki}
-          onChange={handleKiInputChange}
-        />
-        <button type="submit">{isEditing ? "Speichern" : "Hinzufügen"}</button>
-      </form>
-
-      {/* Alle eigenen Charaktere anzeigen */}
-      {customCharacters.map((character, i) => (
-        <div
-          key={character.name + i}
-          style={{ position: "relative", marginBottom: "2rem" }}
-        >
-          <CharacterCard
-            name={character.name}
-            image={character.image}
-            race={character.race}
-            gender={character.gender}
-            baseKi={character.ki}
-            totalKi={character.maxKi}
-            affiliation={character.affiliation}
-            isCustom={true}
+      <div>
+        <form onSubmit={handleSubmit} style={{ marginBottom: "2rem" }}>
+          <h3>{isEditing ? "Charakter bearbeiten" : "Neuen Charakter hinzufuegen"}</h3>
+          <input
+              type="text"
+              name="name"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
           />
-          <button onClick={() => handleDelete(i)}>🗑️ Löschen</button>
-        </div>
-      ))}
-    </div>
+          <input
+              type="text"
+              name="race"
+              placeholder="Rasse"
+              value={race}
+              onChange={(e) => setRace(e.target.value)}
+          />
+          <input
+              type="number"
+              name="ki"
+              placeholder="Base KI"
+              value={ki}
+              onChange={(e) => setKi(e.target.value)}
+          />
+          <button type="submit">{isEditing ? "Speichern" : "Hinzufuegen"}</button>
+        </form>
+
+        {customCharacters.map((character, i) => (
+            <div key={character.name + i} style={{ position: "relative", marginBottom: "2rem" }}>
+              <CharacterCard
+                  id={character.id}
+                  name={character.name}
+                  image={character.image}
+                  race={character.race}
+                  gender={character.gender}
+                  baseKi={character.ki}
+                  totalKi={character.maxKi}
+                  affiliation={character.affiliation}
+                  isCustom
+              />
+              <button type="button" onClick={() => handleDelete(i)}>
+                Loeschen
+              </button>
+            </div>
+        ))}
+      </div>
   );
 };
 
