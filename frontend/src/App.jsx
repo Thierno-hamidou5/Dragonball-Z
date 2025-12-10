@@ -17,83 +17,83 @@ import Home from "./pages/Home";
  * aehnlich wie die Klassenkommentare im Backend.
  */
 function App() {
-  const [customCharacters, setCustomCharacters] = useState([]);
+    const [customCharacters, setCustomCharacters] = useState([]);
 
-  return (
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          {/* Home zeigt alle Charaktere */}
-          <Route
-              index
-              element={
-                <ProtectedRoute>
-                  <Home />
-                </ProtectedRoute>
-              }
-          />
-          {/* Z-Fighters separat unter /z-fighters */}
-          <Route
-              path="z-fighters"
-              element={
-                <ProtectedRoute>
-                  <Z_Fighters />
-                </ProtectedRoute>
-              }
-          />
-          {/* Villains separat unter /villains */}
-          <Route
-              path="villains"
-              element={
-                <ProtectedRoute>
-                  <Villains />
-                </ProtectedRoute>
-              }
-          />
-          <Route
-              path="characters/:id"
-              element={
-                <ProtectedRoute>
-                  <CharacterDetail
-                      customCharacters={customCharacters}
-                      setCustomCharacters={setCustomCharacters}
-                  />
-                </ProtectedRoute>
-              }
-          />
-          <Route
-              path="new-characters"
-              element={
-                <ProtectedRoute requiredRole="ADMIN">
-                  <NeuCharacters
-                      customCharacters={customCharacters}
-                      setCustomCharacters={setCustomCharacters}
-                  />
-                </ProtectedRoute>
-              }
-          />
-          {/* Admin-only route for managing characters via the backend */}
-          <Route
-              path="manage-characters"
-              element={
-                <ProtectedRoute requiredRole="ADMIN">
-                  <ManageCharacters />
-                </ProtectedRoute>
-              }
-          />
-          <Route
-              path="favorites"
-              element={
-                <ProtectedRoute>
-                  <FavoritesPage />
-                </ProtectedRoute>
-              }
-          />
-          <Route path="login" element={<Login />} />
-          <Route path="forbidden" element={<Forbidden />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Route>
-      </Routes>
-  );
+    return (
+        <Routes>
+            <Route path="/" element={<Layout />}>
+                {/* Home zeigt alle Charaktere */}
+                <Route
+                    index
+                    element={
+                        <ProtectedRoute>
+                            <Home />
+                        </ProtectedRoute>
+                    }
+                />
+                {/* Z-Fighters separat unter /z-fighters */}
+                <Route
+                    path="z-fighters"
+                    element={
+                        <ProtectedRoute>
+                            <Z_Fighters />
+                        </ProtectedRoute>
+                    }
+                />
+                {/* Villains separat unter /villains */}
+                <Route
+                    path="villains"
+                    element={
+                        <ProtectedRoute>
+                            <Villains />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="characters/:id"
+                    element={
+                        <ProtectedRoute>
+                            <CharacterDetail
+                                customCharacters={customCharacters}
+                                setCustomCharacters={setCustomCharacters}
+                            />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="new-characters"
+                    element={
+                        <ProtectedRoute requiredRole="ADMIN">
+                            <NeuCharacters
+                                customCharacters={customCharacters}
+                                setCustomCharacters={setCustomCharacters}
+                            />
+                        </ProtectedRoute>
+                    }
+                />
+                {/* Admin-only route for managing characters via the backend */}
+                <Route
+                    path="manage-characters"
+                    element={
+                        <ProtectedRoute requiredRole="ADMIN">
+                            <ManageCharacters />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="favorites"
+                    element={
+                        <ProtectedRoute>
+                            <FavoritesPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route path="login" element={<Login />} />
+                <Route path="forbidden" element={<Forbidden />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+            </Route>
+        </Routes>
+    );
 }
 
 export default App;

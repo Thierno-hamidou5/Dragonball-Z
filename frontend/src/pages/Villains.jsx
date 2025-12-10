@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CharacterCard from "../components/CharacterCard.jsx";
-import { fetchVillains } from "../services/characterService";
+import { fetchVillains } from "../services/characterService.js";
 
 /**
  * Frontend-Seite: listet alle Villains aus dem Backend,

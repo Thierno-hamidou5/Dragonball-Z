@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+
 import {
   addFavourite,
   removeFavourite,
@@ -45,7 +46,7 @@ const CharacterCard = ({
                          affiliation,
                          isCustom = false,
                        }) => {
-  const displayImage = image || "/img/Jiren.webp";
+  const displayImage = image || "/Jiren.webp";
   const targetId = id ?? encodeURIComponent(name);
   const affiliationLabel = Array.isArray(affiliation)
       ? affiliation.join(", ")

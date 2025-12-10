@@ -6,9 +6,12 @@ import com.wiss.dragonball.backend.service.CharacterService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,7 +33,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Thierno
  * @version 1.0
  */
-@WebMvcTest(CharacterController.class)
+@SuppressWarnings({"removal", "deprecation"})
+@WebMvcTest(com.wiss.dragonball.backend.controller.CharacterController.class)
+@AutoConfigureMockMvc(addFilters = false)
+@ActiveProfiles("test")
 public class CharacterControllerTest {
 
     @Autowired
@@ -38,6 +44,12 @@ public class CharacterControllerTest {
 
     @MockBean
     private CharacterService characterService;
+
+    @MockBean
+    private com.wiss.dragonball.backend.service.JwtService jwtService;
+
+    @MockBean
+    private UserDetailsService userDetailsService;
 
     @Autowired
     private ObjectMapper objectMapper;

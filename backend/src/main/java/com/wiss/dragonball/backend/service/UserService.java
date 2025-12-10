@@ -108,12 +108,16 @@ public class UserService implements UserDetailsService {
 
     /**
      * Gibt die Favoriten-Liste des Nutzers zurück.
+     * Transactional, damit die Lazy-Relationen fuer die JSON-Serialisierung
+     * initialisiert sind.
      */
+    @Transactional(readOnly = true)
     public List<Character> getFavourites(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
         return List.copyOf(user.getFavourites());
     }
+
 
     /**
      * Liefert alle Nutzer (z.B. für ADMIN-Endpunkte).

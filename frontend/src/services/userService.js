@@ -1,6 +1,6 @@
 import apiClient from "./apiClient";
 
-const BASE = "/users";
+const BASE = "/api/users";
 
 export const getMyFavourites = () => apiClient.get(`${BASE}/me/favourites`);
 export const fetchFavourites = getMyFavourites; // alias for existing usage

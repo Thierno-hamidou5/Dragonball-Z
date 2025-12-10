@@ -4,7 +4,7 @@ import {
     createCharacter,
     deleteCharacter,
     updateCharacter,
-} from "../services/characterService";
+} from "../services/characterService.js";
 import CharacterCard from "../components/CharacterCard";
 
 /**

@@ -41,7 +41,7 @@ public class CharacterRepositoryTest {
      */
     @Test
     void whenFindByRace_thenReturnSaiyanCharacters() {
-        // Arrange
+        // Vorbereitung
         Character goku = new Character();
         goku.setName("Goku");
         goku.setRace("Saiyan");
@@ -49,10 +49,10 @@ public class CharacterRepositoryTest {
         goku.setPowerLevel(9000000000L);
         entityManager.persistAndFlush(goku);
 
-        // Act: Suche nach "Saiyan"
+        // Aktion: Suche nach "Saiyan"
         List<Character> result = characterRepository.findByRace("Saiyan");
 
-        // Assert: Ergebnis überprüfen
+        // Pruefung: Ergebnis ueberpruefen
         assertThat(result).isNotEmpty();
         assertThat(result.getFirst().getName()).isEqualTo("Goku");
         assertThat(result.getFirst().getRace()).isEqualTo("Saiyan");

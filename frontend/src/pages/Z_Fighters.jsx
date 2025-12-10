@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CharacterCard from "../components/CharacterCard.jsx";
-import { fetchCharactersByAffiliation } from "../services/characterService";
+import { fetchCharactersByAffiliation } from "../services/characterService.js";
 
 /**
  * Frontend-Seite: zeigt alle Z Fighters aus dem Backend,
