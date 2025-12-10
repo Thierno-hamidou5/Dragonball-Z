@@ -14,19 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * REST-Controller für Dragon Ball Charaktere.
- * <p>
- * Stellt HTTP-Endpunkte zur Verfügung, um Charaktere zu erstellen,
- * zu lesen, zu aktualisieren und zu löschen (CRUD).
- * </p>
- * <p>
- * Diese Klasse kommuniziert mit dem {@link CharacterService}, um
- * alle Geschäftslogiken auszuführen.
- * </p>
- *
- * @author Thierno Hamidou Bah
- * @version 1.0.0
- * @since 2025-07-20
+ * REST‑Controller für Dragon Ball Charaktere.
  */
 @RestController
 @RequestMapping("/api/characters")
@@ -35,20 +23,9 @@ public class CharacterController {
 
     private final CharacterService service;
 
-    /**
-     * Konstruktor zur Injektion des CharacterService.
-     *
-     * @param service Instanz des CharacterService
-     */
     public CharacterController(CharacterService service) {
         this.service = service;
     }
-
-    /**
-     * Gibt alle gespeicherten Charaktere zurück.
-     *
-     * @return Liste aller Charaktere
-     */
 
     @GetMapping
     @Operation(summary = "Get all characters", description = "Returns a list of all characters")
@@ -56,12 +33,6 @@ public class CharacterController {
         return ResponseEntity.ok(service.getAllCharacters());
     }
 
-    /**
-     * Gibt einen Charakter anhand seiner ID zurück.
-     *
-     * @param id ID des gesuchten Charakters
-     * @return Charakter mit der angegebenen ID
-     */
     @GetMapping("/{id}")
     @Operation(summary = "Get character by ID", description = "Returns a character by its ID")
     @ApiResponse(responseCode = "200", description = "Character found")
@@ -73,23 +44,14 @@ public class CharacterController {
 
     /**
      * Gibt einen Charakter anhand seines Namens zurück.
-     *
-     * @param name Name des gesuchten Charakters
-     * @return Gefundener Charakter
      */
-    @GetMapping("/by-name/{name}")
+    @GetMapping("/name/{name}")
     @Operation(summary = "Get character by name", description = "Returns a character with the given name")
     public ResponseEntity<CharacterDTO> getCharacterByName(
             @Parameter(description = "Name of the character", example = "Goku") @PathVariable String name) {
         return ResponseEntity.ok(service.getCharacterByName(name));
     }
 
-    /**
-     * Erstellt einen neuen Charakter.
-     *
-     * @param dto Daten des zu erstellenden Charakters
-     * @return Der erstellte Charakter
-     */
     @PostMapping
     @Operation(summary = "Create new character", description = "Creates a new character")
     @ApiResponse(responseCode = "201", description = "Character created")
@@ -100,13 +62,6 @@ public class CharacterController {
         return ResponseEntity.status(201).body(created);
     }
 
-    /**
-     * Aktualisiert einen bestehenden Charakter.
-     *
-     * @param id  ID des zu aktualisierenden Charakters
-     * @param dto Neue Daten des Charakters
-     * @return Aktualisierter Charakter
-     */
     @PutMapping("/{id}")
     @Operation(summary = "Update character", description = "Updates an existing character")
     @ApiResponse(responseCode = "200", description = "Character updated")
@@ -118,12 +73,6 @@ public class CharacterController {
         return ResponseEntity.ok(updated);
     }
 
-    /**
-     * Löscht einen Charakter anhand seiner ID.
-     *
-     * @param id ID des zu löschenden Charakters
-     * @return Leere Antwort mit Status 200
-     */
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete character", description = "Deletes a character by its ID")
     @ApiResponse(responseCode = "200", description = "Character deleted")
@@ -134,23 +83,12 @@ public class CharacterController {
         return ResponseEntity.ok().build();
     }
 
-    /**
-     * Gibt alle Charaktere mit einer bestimmten Rasse zurück.
-     *
-     * @param race Die Rasse der Charaktere
-     * @return Liste der passenden Charaktere
-     */    @GetMapping("/race/{race}")
+    @GetMapping("/race/{race}")
     @Operation(summary = "Get characters by race", description = "Returns all characters of a specific race")
     public ResponseEntity<List<CharacterDTO>> getByRace(@PathVariable String race) {
         return ResponseEntity.ok(service.getCharactersByRace(race));
     }
 
-    /**
-     * Gibt alle Charaktere mit einem bestimmten Power Level zurück.
-     *
-     * @param level Power Level (z.B. 900000000000)
-     * @return Liste der Charaktere mit exakt diesem Power Level
-     */
     @GetMapping("/powerlevel/{level}")
     @Operation(
             summary = "Get characters by power level",
@@ -159,21 +97,14 @@ public class CharacterController {
     public ResponseEntity<List<CharacterDTO>> getByPowerLevel(
             @Parameter(
                     description = "Power level",
-                    example = "900000000000", // ✅ Beispiel großer Wert
-                    schema = @Schema(type = "integer", format = "int64") // ✅ Wichtig!
+                    example = "900000000000",
+                    schema = @Schema(type = "integer", format = "int64")
             )
-            @PathVariable(name = "level") Long level // ✅ Großes L oder primitives long geht beides
+            @PathVariable Long level
     ) {
         return ResponseEntity.ok(service.getCharactersByPowerLevel(level));
     }
 
-    /**
-     * Gibt alle Charaktere zurück, deren Rasse mit dem angegebenen String
-     * übereinstimmt (Gross-/Kleinschreibung wird ignoriert).
-     *
-     * @param race Gesuchte Rasse
-     * @return Liste der passenden Charaktere
-     */
     @GetMapping("/race-ignore")
     @Operation(summary = "Get characters by race (ignore case)", description = "Returns characters with case-insensitive race filter")
     public ResponseEntity<List<CharacterDTO>> getCharactersByRaceIgnoreCase(@RequestParam String race) {
