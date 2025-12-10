@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import CharacterCard from "../CharacterCard"; // Import der Komponente für die Anzeige einzelner Charaktere
+import CharacterCard from "../components/CharacterCard.jsx"; // Import der Komponente für die Anzeige einzelner Charaktere
 
 const Villains = () => {
   // State zum Speichern der Villains-Daten aus der API

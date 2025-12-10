@@ -5,7 +5,7 @@ import "./App.css";
 
 // Importiere Unterseiten-Komponenten
 import CharacterDetail from "./pages/CharacterDetail";
-import CharacterCard from "./CharacterCard";
+import CharacterCard from "./components/CharacterCard.jsx";
 import Villains from "./pages/Villains";
 import Z_Fighters from "./pages/Z_Fighters";
 import NeuCharacters from "./pages/NeuCharacters";

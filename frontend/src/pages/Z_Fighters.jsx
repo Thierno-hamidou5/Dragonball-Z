@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import CharacterCard from "../CharacterCard"; // Importiert die Komponente zur Darstellung eines Charakters
+import CharacterCard from "../components/CharacterCard.jsx"; // Importiert die Komponente zur Darstellung eines Charakters
 
 const Z_Fighters = () => {
   // State zum Speichern der von der API geladenen Z Fighters

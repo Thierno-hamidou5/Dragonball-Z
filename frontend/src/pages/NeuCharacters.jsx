@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import CharacterCard from "../CharacterCard";
+import CharacterCard from "../components/CharacterCard.jsx";
 
 // Komponente zur Erstellung und Bearbeitung von eigenen Charakteren
 const NeuCharacters = ({ customCharacters, setCustomCharacters }) => {
