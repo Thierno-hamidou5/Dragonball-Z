@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 /**
- * JPA-Entity für einen Dragon Ball Charakter.
+ * JPA-Entity fÃ¼r einen Dragon Ball Charakter.
  * <p>
  * Diese Klasse wird verwendet, um Charakterdaten in der Datenbank zu speichern und abzurufen.
  * Sie bildet die Datenstruktur der Tabelle <code>character</code> ab.
@@ -14,12 +14,17 @@ import java.util.List;
  * @version 1.0
  * @since 2025-07-20
  */
+
+/**
+ * Schweizerdeutsche Kurzbeschreibung: persistente Darstellung eines Dragonball-Charakters.
+ * Haelt alle Felder, die das REST-API speichert, inklusive Bilder, Rasse und Transformationen.
+ */
 @Entity
 @Table(name = "character")
 public class Character {
 
     /**
-     * Eindeutige ID des Charakters (Primärschlüssel).
+     * Eindeutige ID des Charakters (PrimÃ¤rschlÃ¼ssel).
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +41,7 @@ public class Character {
     private String race;
 
     /**
-     * Aktuelles Ki-Level (als Text für formatierten Wert, z.B. "60,000,000").
+     * Aktuelles Ki-Level (als Text fÃ¼r formatierten Wert, z.B. "60,000,000").
      */
     private String ki;
 
@@ -51,12 +56,12 @@ public class Character {
     private long powerLevel;
 
     /**
-     * Universum, zu dem der Charakter gehört (1 bis 12).
+     * Universum, zu dem der Charakter gehÃ¶rt (1 bis 12).
      */
     private int universe;
 
     /**
-     * Gibt an, ob der Charakter ein Bösewicht ist.
+     * Gibt an, ob der Charakter ein BÃ¶sewicht ist.
      */
     private boolean isVillain;
 
@@ -66,7 +71,7 @@ public class Character {
     private String gender;
 
     /**
-     * Kurze Beschreibung über den Charakter.
+     * Kurze Beschreibung Ã¼ber den Charakter.
      */
     private String description;
 
@@ -76,7 +81,7 @@ public class Character {
     private String image;
 
     /**
-     * Zugehörigkeit oder Team (z.B. Z Fighter, Frieza Force).
+     * ZugehÃ¶rigkeit oder Team (z.B. Z Fighter, Frieza Force).
      */
     private String affiliation;
 
@@ -93,13 +98,13 @@ public class Character {
     private String imageUrl;
 
     /**
-     * Leerer Konstruktor für JPA.
+     * Leerer Konstruktor fÃ¼r JPA.
      */
     public Character() {
     }
 
     /**
-     * Konstruktor ohne ID, z.B. für Erstellung eines neuen Charakters.
+     * Konstruktor ohne ID, z.B. fÃ¼r Erstellung eines neuen Charakters.
      */
     public Character(String name, String race, String ki, String maxKi, long powerLevel,
                      int universe, boolean isVillain,
@@ -123,7 +128,7 @@ public class Character {
     }
 
     /**
-     * Konstruktor mit ID, z.B. für Update oder DB-Import.
+     * Konstruktor mit ID, z.B. fÃ¼r Update oder DB-Import.
      */
     public Character(Long id, String name, String race, String ki, String maxKi, long powerLevel,
                      int universe, boolean isVillain,
@@ -147,7 +152,7 @@ public class Character {
         this.affiliation = affiliation;
     }
 
-    // 🧩 Getter & Setter
+    // ðŸ§© Getter & Setter
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -192,3 +197,4 @@ public class Character {
 
 
 }
+

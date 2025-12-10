@@ -6,25 +6,16 @@ import com.wiss.dragonball.backend.entity.Character;
 import java.util.List;
 
 /**
- * Mapper-Klasse zur Umwandlung zwischen {@link Character} Entitäten und {@link CharacterDTO} Objekten.
- * <p>
- * Diese Klasse stellt statische Methoden bereit, um:
- * <ul>
- *     <li>einzelne Entitäten in DTOs zu konvertieren und umgekehrt</li>
- *     <li>Listen von Entitäten in DTO-Listen zu transformieren und umgekehrt</li>
- * </ul>
- * </p>
- *
- * @author Thierno
- * @version 1.0
+ * Mapper-Klasse fuer Character-Entitaeten und CharacterDTOs.
+ * Stellt statische Hilfsmethoden bereit, auch fuer Listen, damit Controller und Services schlank bleiben.
  */
 public class CharacterMapper {
 
     /**
-     * Wandelt eine {@link Character} Entität in ein {@link CharacterDTO} um.
+     * Wandelt eine {@link Character} Entitaet in ein {@link CharacterDTO} um.
      *
-     * @param entity Die Datenbank-Entität
-     * @return Das entsprechende DTO-Objekt oder {@code null}, wenn {@code entity} null ist
+     * @param entity die Datenbank-Entitaet
+     * @return das entsprechende DTO oder {@code null}, falls {@code entity} null ist
      */
     public static CharacterDTO toDTO(Character entity) {
         if (entity == null) return null;
@@ -49,10 +40,10 @@ public class CharacterMapper {
     }
 
     /**
-     * Wandelt ein {@link CharacterDTO} in eine {@link Character} Entität um.
+     * Wandelt ein {@link CharacterDTO} in eine {@link Character} Entitaet um.
      *
-     * @param dto Das DTO-Objekt
-     * @return Die entsprechende Entität oder {@code null}, wenn {@code dto} null ist
+     * @param dto das DTO-Objekt
+     * @return die entsprechende Entitaet oder {@code null}, wenn {@code dto} null ist
      */
     public static Character toEntity(CharacterDTO dto) {
         if (dto == null) return null;
@@ -75,9 +66,9 @@ public class CharacterMapper {
     }
 
     /**
-     * Wandelt eine Liste von {@link Character} Entitäten in eine Liste von {@link CharacterDTO}s um.
+     * Wandelt eine Liste von {@link Character} Entitaeten in eine Liste von {@link CharacterDTO}s um.
      *
-     * @param entities Liste von Entitäten
+     * @param entities Liste von Entitaeten
      * @return Liste von DTOs
      */
     public static List<CharacterDTO> toDTOList(List<Character> entities) {
@@ -87,10 +78,10 @@ public class CharacterMapper {
     }
 
     /**
-     * Wandelt eine Liste von {@link CharacterDTO}s in eine Liste von {@link Character} Entitäten um.
+     * Wandelt eine Liste von {@link CharacterDTO}s in eine Liste von {@link Character} Entitaeten um.
      *
      * @param dtos Liste von DTOs
-     * @return Liste von Entitäten
+     * @return Liste von Entitaeten
      */
     public static List<Character> toEntityList(List<CharacterDTO> dtos) {
         return dtos.stream()

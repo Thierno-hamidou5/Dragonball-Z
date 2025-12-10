@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Data Transfer Object (DTO) für Dragonball-Charaktere.
+ * Data Transfer Object (DTO) fÃ¼r Dragonball-Charaktere.
  * <p>
  * Dieses DTO wird verwendet, um Charakterdaten zwischen Backend und Frontend auszutauschen.
- * Es enthält Validierungsregeln sowie Beschreibungen für Swagger/OpenAPI.
+ * Es enthÃ¤lt Validierungsregeln sowie Beschreibungen fÃ¼r Swagger/OpenAPI.
  * </p>
  *
  * <p><strong>Verwendung:</strong></p>
@@ -25,6 +25,11 @@ import java.util.List;
  * @since 2025-07-20
  */
 @Schema(description = "DTO for Dragon Ball character data")
+
+/**
+ * Schweizerdeutsche Zusammenfassung: Transportobjekt fuer Charakterdaten zwischen API und Client.
+ * HÃ¤lt Validierungsregeln bereit und dient als neutrales Format ohne JPA-Abhaengigkeiten.
+ */
 public class CharacterDTO {
 
     /**
@@ -82,34 +87,34 @@ public class CharacterDTO {
     private String image;
 
     /**
-     * Zugehörigkeit oder Team des Charakters (z.B. Z Fighter, Frieza Force).
+     * ZugehÃ¶rigkeit oder Team des Charakters (z.B. Z Fighter, Frieza Force).
      */
     @Schema(description = "Affiliation or team", example = "Z Fighter")
     private String affiliation;
 
     /**
-     * Geschätzter Power Level des Charakters.
+     * GeschÃ¤tzter Power Level des Charakters.
      * <p>
-     * Wird als Long gespeichert, um sehr grosse Werte zu ermöglichen.
+     * Wird als Long gespeichert, um sehr grosse Werte zu ermÃ¶glichen.
      * </p>
      */
     @Schema(description = "Estimated power level", example = "900000000000", type = "integer", format = "int64")
     private long powerLevel;
 
     /**
-     * Universum, dem der Charakter angehört (1 bis 12).
+     * Universum, dem der Charakter angehÃ¶rt (1 bis 12).
      */
     @Schema(description = "Universe the character belongs to", example = "7")
     private int universe;
 
     /**
-     * Kennzeichnet, ob es sich um einen Bösewicht handelt.
+     * Kennzeichnet, ob es sich um einen BÃ¶sewicht handelt.
      * <p>
      * Wird im JSON als <code>villain: true/false</code> dargestellt.
      * </p>
      */
     @Schema(description = "True if the character is a villain", example = "false")
-    private boolean villain;  // renamed from isVillain to avoid Swagger issues
+    private boolean villain;  // umbenannt von isVillain, um Swagger-Probleme zu vermeiden
 
     /**
      * Liste der Transformationen des Charakters.
@@ -118,21 +123,21 @@ public class CharacterDTO {
      * </p>
      */
     @Schema(description = "List of transformations (e.g., Super Saiyan, Ultra Ego)", example = "[\"Super Saiyan\", \"SSGSS\"]")
-    private List<String> transformations = new ArrayList<>();  // initialized
+    private List<String> transformations = new ArrayList<>();  // vorinitialisiert
 
     /**
-     * Zusätzliche oder alternative Bild-URL zum Charakter.
+     * ZusÃ¤tzliche oder alternative Bild-URL zum Charakter.
      */
     @Schema(description = "Alternative or extra image URL", example = "https://example.com/vegeta_alternate.png")
     private String imageUrl;
 
     /**
-     * Leerer Konstruktor für das Framework und die Serialisierung.
+     * Leerer Konstruktor fÃ¼r das Framework und die Serialisierung.
      */
     public CharacterDTO() {}
 
     /**
-     * Konstruktor zur Initialisierung eines vollständigen CharacterDTO-Objekts.
+     * Konstruktor zur Initialisierung eines vollstÃ¤ndigen CharacterDTO-Objekts.
      * <p>
      * Wird verwendet, um alle Eigenschaften eines Charakters manuell zu setzen.
      * Falls die Transformationen {@code null} sind, wird automatisch eine leere Liste gesetzt.
@@ -146,10 +151,10 @@ public class CharacterDTO {
      * @param gender         Geschlecht
      * @param description    Beschreibung
      * @param image          Bild-URL
-     * @param affiliation    Zugehörigkeit (z.B. Z-Fighter)
+     * @param affiliation    ZugehÃ¶rigkeit (z.B. Z-Fighter)
      * @param powerLevel     Kampfkraft
      * @param universe       Universum
-     * @param villain        true, wenn Bösewicht
+     * @param villain        true, wenn BÃ¶sewicht
      * @param transformations Liste der Transformationen
      * @param imageUrl       Alternativbild
      */
@@ -174,7 +179,7 @@ public class CharacterDTO {
     }
 
     /**
-     * Getter- und Setter-Methoden für alle Felder des DTOs.
+     * Getter- und Setter-Methoden fÃ¼r alle Felder des DTOs.
      * <p>
      * Dienen der Kapselung und erlauben den kontrollierten Zugriff auf die Eigenschaften
      * des Charakters (z.B. Name, Rasse, Kampfkraft etc.).
@@ -224,3 +229,4 @@ public class CharacterDTO {
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 }
+
