@@ -57,12 +57,12 @@ public class AuthController {
      */
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
-        // check if username already exists and return a clear 409 Conflict
+        // Prüfen, ob der Benutzername bereits existiert
         if (userService.findByUsername(request.getUsername()).isPresent()) {
             return ResponseEntity.status(409).body("username already exists");
         }
-
-        User user = userService.createUser(request.getUsername(), request.getPassword(), request.getRole());
+        // Neue Benutzer bekommen immer die Rolle PLAYER
+        User user = userService.createUser(request.getUsername(), request.getPassword(), Role.PLAYER);
         return ResponseEntity.ok("registered " + user.getUsername());
     }
 

@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,12 +21,8 @@ import java.util.List;
 @RequestMapping("/api/characters")
 @Tag(name = "Characters", description = "CRUD operations for Dragon Ball characters")
 public class CharacterController {
-
     private final CharacterService service;
-
-    public CharacterController(CharacterService service) {
-        this.service = service;
-    }
+    public CharacterController(CharacterService service) { this.service = service; }
 
     @GetMapping
     @Operation(summary = "Get all characters", description = "Returns a list of all characters")
@@ -37,51 +34,45 @@ public class CharacterController {
     @Operation(summary = "Get character by ID", description = "Returns a character by its ID")
     @ApiResponse(responseCode = "200", description = "Character found")
     @ApiResponse(responseCode = "404", description = "Character not found")
-    public ResponseEntity<CharacterDTO> getCharacterById(
-            @Parameter(description = "ID of the character", example = "1") @PathVariable Long id) {
+    public ResponseEntity<CharacterDTO> getCharacterById(@PathVariable Long id) {
         return ResponseEntity.ok(service.getCharacterById(id));
     }
 
-    /**
-     * Gibt einen Charakter anhand seines Namens zurück.
-     */
     @GetMapping("/name/{name}")
-    @Operation(summary = "Get character by name", description = "Returns a character with the given name")
-    public ResponseEntity<CharacterDTO> getCharacterByName(
-            @Parameter(description = "Name of the character", example = "Goku") @PathVariable String name) {
+    public ResponseEntity<CharacterDTO> getCharacterByName(@PathVariable String name) {
         return ResponseEntity.ok(service.getCharacterByName(name));
     }
 
+    /**
+     * Erstellt einen neuen Charakter. Nur Benutzer mit ADMIN‑Rolle dürfen diesen
+     * Endpunkt aufrufen.
+     */
     @PostMapping
-    @Operation(summary = "Create new character", description = "Creates a new character")
-    @ApiResponse(responseCode = "201", description = "Character created")
-    public ResponseEntity<CharacterDTO> createCharacter(
-            @Parameter(description = "Character data", required = true)
-            @Valid @RequestBody CharacterDTO dto) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<CharacterDTO> createCharacter(@Valid @RequestBody CharacterDTO dto) {
         CharacterDTO created = service.createCharacter(dto);
         return ResponseEntity.status(201).body(created);
     }
 
+    /**
+     * Aktualisiert einen bestehenden Charakter. ADMIN‑Rolle erforderlich.
+     */
     @PutMapping("/{id}")
-    @Operation(summary = "Update character", description = "Updates an existing character")
-    @ApiResponse(responseCode = "200", description = "Character updated")
-    @ApiResponse(responseCode = "404", description = "Character not found")
-    public ResponseEntity<CharacterDTO> updateCharacter(
-            @Parameter(description = "ID of the character to update", example = "1") @PathVariable Long id,
-            @Valid @RequestBody CharacterDTO dto) {
-        CharacterDTO updated = service.updateCharacter(id, dto);
-        return ResponseEntity.ok(updated);
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<CharacterDTO> updateCharacter(@PathVariable Long id, @Valid @RequestBody CharacterDTO dto) {
+        return ResponseEntity.ok(service.updateCharacter(id, dto));
     }
 
+    /**
+     * Löscht einen Charakter. ADMIN‑Rolle erforderlich.
+     */
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete character", description = "Deletes a character by its ID")
-    @ApiResponse(responseCode = "200", description = "Character deleted")
-    @ApiResponse(responseCode = "404", description = "Character not found")
-    public ResponseEntity<Void> deleteCharacter(
-            @Parameter(description = "ID of the character to delete", example = "1") @PathVariable Long id) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteCharacter(@PathVariable Long id) {
         service.deleteCharacter(id);
         return ResponseEntity.ok().build();
     }
+
 
     @GetMapping("/race/{race}")
     @Operation(summary = "Get characters by race", description = "Returns all characters of a specific race")
